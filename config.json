@@ -1,0 +1,9 @@
+{
+  "firebase": {
+    "apiKey": "AIzaSyAsNXsYgaleLJXamyL1nebtvU0MRzXV2Lo",
+    "authDomain": "take-my-stufff.firebaseapp.com",
+    "databaseURL": "https://take-my-stufff.firebaseio.com",
+    "projectId": "take-my-stufff",
+    "storageBucket": "gs://take-my-stufff.appspot.com/"
+  }
+}
