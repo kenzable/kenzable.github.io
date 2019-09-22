@@ -1,24 +1,19 @@
 {
-  "name": "kenzable.github.io",
+  "name": "take-my-stufff",
   "private": true,
-  "description": "A project for quickly deploying to my github page",
+  "description": "A static site to help me get rid of my stuff!",
   "version": "0.1.0",
   "author": "Mackenzie Turner <turner.mackenzie.m@gmail.com>",
   "dependencies": {
     "firebase": "^6.6.2",
-    "gatsby": "^2.15.19",
-    "gatsby-image": "^2.2.20",
+    "gatsby": "^2.15.20",
     "gatsby-plugin-react-helmet": "^3.1.8",
-    "gatsby-plugin-sharp": "^2.2.25",
-    "gatsby-source-filesystem": "^2.1.25",
-    "gatsby-transformer-sharp": "^2.2.16",
     "prop-types": "^15.7.2",
     "react": "^16.9.0",
     "react-dom": "^16.9.0",
     "react-helmet": "^5.2.1",
     "semantic-ui-css": "^2.4.1",
-    "semantic-ui-react": "^0.88.1",
-    "styled-components": "^4.3.2"
+    "semantic-ui-react": "^0.88.1"
   },
   "devDependencies": {
     "babel-eslint": "^10.0.3",
@@ -47,6 +42,6 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/kenzable/kenzable.github.io"
+    "url": "https://github.com/kenzable/take-my-stufff.git"
   }
 }
