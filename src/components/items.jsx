@@ -21,7 +21,7 @@ export default class Items extends React.Component {
   }
 
   render() {
-    const { type, storageRef } = this.props;
+    const { handleSelection, isSelected, type, storageRef } = this.props;
     const { items, loaded } = this.state;
     return (
       <Container>
@@ -31,7 +31,15 @@ export default class Items extends React.Component {
         </Header>
         <Card.Group centered>
           {loaded ? (
-            items.map(item => <Item key={item.id} item={item} storageRef={storageRef} />)
+            items.map(item => (
+              <Item
+                key={item.id}
+                item={item}
+                storageRef={storageRef}
+                handleSelection={handleSelection}
+                isSelected={isSelected}
+              />
+            ))
           ) : (
             <Loader active inline="centered" size="large" inverted>
               Loading Items...
@@ -44,6 +52,8 @@ export default class Items extends React.Component {
 }
 
 Items.propTypes = {
+  handleSelection: PropTypes.func.isRequired,
+  isSelected: PropTypes.func.isRequired,
   type: PropTypes.string.isRequired,
   firestore: PropTypes.shape({
     collection: PropTypes.func,

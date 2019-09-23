@@ -5,14 +5,13 @@ import 'firebase/firestore';
 import 'firebase/storage';
 import { firebase as firebaseConfig } from '../../config.json';
 import SEO from '../components/seo';
-import Items from '../components/items';
+import Selector from '../components/selector';
 
 import 'semantic-ui-css/semantic.min.css';
 
 firebase.initializeApp(firebaseConfig);
 const firestore = firebase.firestore();
 const storageRef = firebase.storage().ref();
-const itemTypes = ['books'];
 
 const IndexPage = () => (
   <Container textAlign="center">
@@ -28,9 +27,7 @@ const IndexPage = () => (
       }}>
       Take my stuff
     </Header>
-    {itemTypes.map(type => (
-      <Items key={type} type={type} firestore={firestore} storageRef={storageRef} />
-    ))}
+    <Selector firestore={firestore} storageRef={storageRef} />
   </Container>
 );
 

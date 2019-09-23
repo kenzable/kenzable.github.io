@@ -10,7 +10,9 @@ const statusMap = {
 export default class Item extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { src: null };
+    const { isSelected, item } = props;
+    this.state = { checked: isSelected(item.id), src: null };
+    this.toggleCheck = this.toggleCheck.bind(this);
   }
 
   async componentDidMount() {
@@ -24,14 +26,26 @@ export default class Item extends React.Component {
     }
   }
 
+  toggleCheck() {
+    const { handleSelection, item } = this.props;
+    const { checked } = this.state;
+    const newCheckedState = !checked;
+    handleSelection(item, newCheckedState);
+    this.setState({ checked: newCheckedState });
+  }
+
   render() {
     const { item } = this.props;
     const { name, description, price, status } = item;
-    const { src } = this.state;
+    const { checked, src } = this.state;
     return (
       <Card>
         {src && <Image src={src} rounded fluid />}
-        <Checkbox style={{ position: 'absolute', top: '5px', right: '5px' }} />
+        <Checkbox
+          style={{ position: 'absolute', top: '5px', right: '5px' }}
+          onChange={this.toggleCheck}
+          checked={checked}
+        />
         <Card.Content>
           <Card.Header>{name}</Card.Header>
           {description && <Card.Description>{description}</Card.Description>}
@@ -46,6 +60,8 @@ export default class Item extends React.Component {
 }
 
 Item.propTypes = {
+  handleSelection: PropTypes.func.isRequired,
+  isSelected: PropTypes.func.isRequired,
   item: PropTypes.shape({
     id: PropTypes.string,
     name: PropTypes.string,
