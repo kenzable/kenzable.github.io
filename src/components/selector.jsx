@@ -5,7 +5,7 @@ import Main from './main';
 import CheckOut from './check-out';
 import Items from './items';
 
-const views = ['main', 'books', 'home', 'miscellaneous', 'check out'];
+const views = ['main', 'books', 'home', 'hobbies', 'clothes', 'consumables', 'tech', 'check out'];
 
 export default class Selector extends React.Component {
   constructor(props) {

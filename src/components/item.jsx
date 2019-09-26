@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Card, Dimmer, Header, Icon, Image } from 'semantic-ui-react';
+import { Card, Icon, Image } from 'semantic-ui-react';
 
 const statusMap = {
   A: 'Available',
@@ -13,13 +13,10 @@ export default class Item extends React.Component {
     super(props);
     const { isSelected, item } = props;
     this.state = {
-      dimmed: false,
       checked: isSelected(item.id),
       src: null,
     };
     this.toggleCheck = this.toggleCheck.bind(this);
-    this.handleDim = this.handleDim.bind(this);
-    this.handleUndim = this.handleUndim.bind(this);
   }
 
   async componentDidMount() {
@@ -45,38 +42,14 @@ export default class Item extends React.Component {
     this.setState({ checked: newCheckedState });
   }
 
-  handleDim() {
-    this.setState({ dimmed: true });
-  }
-
-  handleUndim() {
-    this.setState({ dimmed: false });
-  }
-
   render() {
     const { item } = this.props;
     const { name, description, price, status } = item;
-    const { checked, dimmed, src } = this.state;
+    const { checked, src } = this.state;
 
     return (
       <Card onClick={this.toggleCheck} style={{ cursor: 'pointer' }}>
-        {src && (
-          <Dimmer.Dimmable as="div" onMouseEnter={this.handleDim} onMouseLeave={this.handleUndim}>
-            <Image src={src} rounded fluid />
-            <Dimmer inverted active={dimmed} style={{ background: 'rgba(211, 189, 234, 0.52)' }}>
-              <Header
-                as="h2"
-                style={{
-                  color: 'rgba(0,0,0,.4)',
-                  textTransform: 'uppercase',
-                  fontWeight: 'bold',
-                  fontSize: '2rem',
-                }}>
-                select item
-              </Header>
-            </Dimmer>
-          </Dimmer.Dimmable>
-        )}
+        {src && <Image src={src} rounded fluid />}
         {checked && (
           <Icon
             size="huge"
