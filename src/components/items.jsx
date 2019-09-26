@@ -1,7 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Card, Container, Divider, Header, Loader } from 'semantic-ui-react';
+import { Card, Container, Header, Loader } from 'semantic-ui-react';
 import Item from './item';
+
+const itemCache = new Map();
 
 export default class Items extends React.Component {
   constructor(props) {
@@ -12,8 +14,12 @@ export default class Items extends React.Component {
   async componentDidMount() {
     const { type, firestore } = this.props;
     try {
-      const { docs } = await firestore.collection(type).get();
-      const items = (docs || []).map(doc => ({ id: doc.id, ...doc.data() }));
+      let items = itemCache.get(type);
+      if (!items) {
+        const { docs } = await firestore.collection(type).get();
+        items = (docs || []).map(doc => ({ id: doc.id, ...doc.data() }));
+        itemCache.set(type, items);
+      }
       this.setState({ items, loaded: true });
     } catch (err) {
       console.error(`Failed to retrieve data for collection "${type}"`, err);
@@ -23,23 +29,25 @@ export default class Items extends React.Component {
   render() {
     const { handleSelection, isSelected, type, storageRef } = this.props;
     const { items, loaded } = this.state;
+
     return (
       <Container>
-        <Divider />
         <Header as="h2" style={{ textTransform: 'uppercase', marginBottom: '2rem' }}>
           {type}
         </Header>
         <Card.Group centered>
           {loaded ? (
-            items.map(item => (
-              <Item
-                key={item.id}
-                item={item}
-                storageRef={storageRef}
-                handleSelection={handleSelection}
-                isSelected={isSelected}
-              />
-            ))
+            items
+              .filter(({ status }) => status !== 'T')
+              .map(item => (
+                <Item
+                  key={item.id}
+                  item={item}
+                  storageRef={storageRef}
+                  handleSelection={handleSelection}
+                  isSelected={isSelected}
+                />
+              ))
           ) : (
             <Loader active inline="centered" size="large" inverted>
               Loading Items...

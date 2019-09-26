@@ -22,7 +22,7 @@ function SEO({ description, lang, meta, title }) {
           }
         }
       }
-    `
+    `,
   );
 
   const metaDescription = description || site.siteMetadata.description;
@@ -35,6 +35,10 @@ function SEO({ description, lang, meta, title }) {
       title={title}
       titleTemplate={`%s | ${site.siteMetadata.title}`}
       meta={[
+        {
+          name: 'referrer',
+          content: 'origin',
+        },
         {
           name: `description`,
           content: metaDescription,

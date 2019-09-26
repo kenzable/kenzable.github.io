@@ -1,28 +1,30 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Container, Menu } from 'semantic-ui-react';
+import { Container, Divider, Menu } from 'semantic-ui-react';
+import Main from './main';
+import CheckOut from './check-out';
 import Items from './items';
 
-const itemTypes = ['books', 'home', 'miscellaneous'];
+const views = ['main', 'books', 'home', 'miscellaneous', 'check out'];
 
 export default class Selector extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { selections: new Map(), type: null };
-    this.handleTypeClick = this.handleTypeClick.bind(this);
+    this.state = { selections: new Map(), active: 'main' };
+    this.handleActiveClick = this.handleActiveClick.bind(this);
     this.handleSelection = this.handleSelection.bind(this);
     this.isSelected = this.isSelected.bind(this);
   }
 
-  handleTypeClick(e, { name }) {
-    this.setState({ type: name });
+  handleActiveClick(e, { name }) {
+    this.setState({ active: name });
   }
 
   handleSelection(item, add) {
     this.setState(({ selections }) => {
       if (add) selections.set(item.id, item);
       else selections.delete(item.id);
-      return { selections };
+      return { selections: new Map(selections) };
     });
   }
 
@@ -31,36 +33,42 @@ export default class Selector extends React.Component {
     return selections.has(id);
   }
 
-  render() {
+  renderView() {
     const { firestore, storageRef } = this.props;
-    const { selections, type } = this.state;
+    const { active, selections } = this.state;
+    if (active === 'main') return <Main />;
+    if (active === 'check out') {
+      const items = [...selections.values()].map(({ name }) => name);
+      return <CheckOut items={items} />;
+    }
+    return (
+      <Items
+        key={active}
+        firestore={firestore}
+        handleSelection={this.handleSelection}
+        isSelected={this.isSelected}
+        storageRef={storageRef}
+        type={active}
+      />
+    );
+  }
 
-    console.log('what are selections?', selections);
-
+  render() {
+    const { active } = this.state;
     return (
       <Container>
         <Menu text>
-          {itemTypes.map(itemType => (
+          {views.map(navOpt => (
             <Menu.Item
-              key={itemType}
-              name={itemType}
-              active={type === itemType}
-              onClick={this.handleTypeClick}
+              key={navOpt}
+              name={navOpt}
+              active={active === navOpt}
+              onClick={this.handleActiveClick}
             />
           ))}
         </Menu>
-        {type ? (
-          <Items
-            firestore={firestore}
-            handleSelection={this.handleSelection}
-            isSelected={this.isSelected}
-            key={type}
-            storageRef={storageRef}
-            type={type}
-          />
-        ) : (
-          <p>hi</p>
-        )}
+        <Divider />
+        {this.renderView()}
       </Container>
     );
   }
