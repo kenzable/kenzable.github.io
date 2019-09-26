@@ -38,8 +38,8 @@ export default class Selector extends React.Component {
     const { active, selections } = this.state;
     if (active === 'main') return <Main />;
     if (active === 'check out') {
-      const items = [...selections.values()].map(({ name }) => name);
-      return <CheckOut items={items} />;
+      const items = [...selections.values()];
+      return <CheckOut handleSelection={this.handleSelection} items={items} />;
     }
     return (
       <Items

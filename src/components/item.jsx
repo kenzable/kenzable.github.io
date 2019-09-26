@@ -59,15 +59,11 @@ export default class Item extends React.Component {
     const { checked, dimmed, src } = this.state;
 
     return (
-      <Card>
+      <Card onClick={this.toggleCheck} style={{ cursor: 'pointer' }}>
         {src && (
           <Dimmer.Dimmable as="div" onMouseEnter={this.handleDim} onMouseLeave={this.handleUndim}>
             <Image src={src} rounded fluid />
-            <Dimmer
-              inverted
-              active={dimmed}
-              style={{ background: 'rgba(211, 189, 234, 0.52)' }}
-              onClick={this.toggleCheck}>
+            <Dimmer inverted active={dimmed} style={{ background: 'rgba(211, 189, 234, 0.52)' }}>
               <Header
                 as="h2"
                 style={{
