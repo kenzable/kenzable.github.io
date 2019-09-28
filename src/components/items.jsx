@@ -38,7 +38,7 @@ export default class Items extends React.Component {
         <Card.Group centered>
           {loaded ? (
             items
-              .filter(({ status }) => status !== 'T')
+              .filter(({ status }) => status === 'A')
               .map(item => (
                 <Item
                   key={item.id}
